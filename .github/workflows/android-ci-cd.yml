@@ -1,4 +1,4 @@
-name: Android CI/CD
+name: Android CI/CD + AI Review
 
 on:
   pull_request:
@@ -13,8 +13,22 @@ on:
       - "release/**"
 
 jobs:
+  ai-review:
+    name: AI Code Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run AI Code Review
+        uses: coderabbitai/ai-pr-reviewer@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build-check:
-    name: Build Check
+    name: Build + Lint + Test Check
     runs-on: ubuntu-latest
 
     steps:
@@ -30,10 +44,13 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Grant permission
+      - name: Grant execute permission
         run: chmod +x gradlew
 
-      - name: Run unit test
+      - name: Run Android Lint
+        run: ./gradlew lintSitDebug
+
+      - name: Run Unit Test
         run: ./gradlew test
 
       - name: Build SIT Debug APK
@@ -55,13 +72,13 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Grant permission
+      - name: Grant execute permission
         run: chmod +x gradlew
 
-      - name: Build SIT APK
+      - name: Build SIT Release APK
         run: ./gradlew assembleSitRelease
 
-      - name: Build UAT APK
+      - name: Build UAT Release APK
         run: ./gradlew assembleUatRelease
 
   deploy-production:
@@ -80,7 +97,7 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Grant permission
+      - name: Grant execute permission
         run: chmod +x gradlew
 
       - name: Build Production AAB
