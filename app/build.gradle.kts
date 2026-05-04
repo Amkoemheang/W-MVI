@@ -20,6 +20,28 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    flavorDimensions += "environment"
+
+    productFlavors {
+        create("sit") {
+            dimension = "environment"
+            applicationIdSuffix = ".sit"
+            versionNameSuffix = "-SIT"
+            resValue("string", "app_name", "W Jetpack Compose SIT")
+        }
+
+        create("uat") {
+            dimension = "environment"
+            applicationIdSuffix = ".uat"
+            versionNameSuffix = "-UAT"
+            resValue("string", "app_name", "W Jetpack Compose UAT")
+        }
+
+        create("prod") {
+            dimension = "environment"
+            resValue("string", "app_name", "W Jetpack Compose")
+        }
+    }
 
     buildTypes {
         release {
