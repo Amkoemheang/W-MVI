@@ -1,0 +1,28 @@
+reviews:
+  auto_review:
+    enabled: true
+
+language: "en"
+
+early_access: false
+
+chat:
+  auto_reply: true
+
+path_filters:
+  - "!**/*.md"
+  - "!**/*.png"
+  - "!**/*.jpg"
+
+review_instructions: |
+  Review Kotlin Android code for:
+  - Clean Architecture
+  - MVVM / MVI best practices
+  - Jetpack Compose performance
+  - Naming conventions
+  - SOLID principles
+  - Memory leaks
+  - UI recomposition issues
+  - State management issues
+  - Coroutine misuse
+  - Repository pattern correctness
