@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">W-JetPack-Compose</string>
+    <string name="app_name">W Jetpack Compose</string>
+    <string name="posts">Posts</string>
+    <string name="toggle_theme">Toggle Theme</string>
+    <string name="change_language">Change Language</string>
+    <string name="english">English</string>
+    <string name="khmer">Khmer</string>
+    <string name="chinese">Chinese</string>
 </resources>

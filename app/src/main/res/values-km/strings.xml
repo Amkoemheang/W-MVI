@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">W Jetpack Compose</string>
+    <string name="posts">អត្ថបទ</string>
+    <string name="toggle_theme">ប្តូររូបរាង</string>
+    <string name="change_language">ប្តូរភាសា</string>
+    <string name="english">អង់គ្លេស</string>
+    <string name="khmer">ខ្មែរ</string>
+    <string name="chinese">ចិន</string>
+</resources>
