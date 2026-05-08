@@ -6,8 +6,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.w_jetpack_compose.ui.notifications.NotificationsScreen
 import com.example.w_jetpack_compose.ui.post.PostDetailScreen
 import com.example.w_jetpack_compose.ui.post.PostScreen
+import com.example.w_jetpack_compose.ui.profile.ProfileScreen
+import com.example.w_jetpack_compose.ui.search.SearchScreen
+import com.example.w_jetpack_compose.ui.settings.SettingsScreen
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.koinInject
 
@@ -23,13 +27,25 @@ fun AppNavHost(
             when (action) {
                 is NavigationAction.NavigateTo -> {
                     navController.navigate(action.route) {
-                        action.popUpTo?.let {
-                            popUpTo(it) { inclusive = action.inclusive }
+                        launchSingleTop = action.singleTop
+                        action.popUpTo?.let { popRoute ->
+                            popUpTo(popRoute) { inclusive = action.inclusive }
                         }
                     }
                 }
-                NavigationAction.NavigateBack -> {
+                is NavigationAction.NavigateAndClearStack -> {
+                    navController.navigate(action.route) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+                is NavigationAction.NavigateBack -> {
                     navController.popBackStack()
+                }
+                is NavigationAction.NavigateBackTo -> {
+                    navController.popBackStack(action.route, action.inclusive)
                 }
             }
         }
@@ -53,9 +69,38 @@ fun AppNavHost(
             val detail: Route.PostDetail = backStackEntry.toRoute()
             PostDetailScreen(
                 postId = detail.id,
-                onBack = {
-                    navController.popBackStack() 
-                }
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.Profile> {
+            ProfileScreen(
+                onBack = { navController.popBackStack() },
+                onSettingsClick = { navController.navigate(Route.Settings) }
+            )
+        }
+
+        composable<Route.Settings> {
+            SettingsScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.Search> {
+            SearchScreen()
+        }
+
+        composable<Route.Notifications> {
+            NotificationsScreen()
+        }
+
+        composable<Route.UserPosts> { backStackEntry ->
+            val userPosts: Route.UserPosts = backStackEntry.toRoute()
+            // Placeholder for UserPostsScreen
+            PostScreen(
+                isDarkMode = isDarkMode,
+                onThemeToggle = onThemeToggle,
+                onPostClick = { /* Handle nested click if needed */ }
             )
         }
     }
