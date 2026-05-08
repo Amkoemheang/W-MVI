@@ -87,7 +87,11 @@ fun AppNavHost(
         }
 
         composable<Route.Search> {
-            SearchScreen()
+            SearchScreen(
+                onPostClick = { postId ->
+                    navController.navigate(Route.PostDetail(postId))
+                }
+            )
         }
 
         composable<Route.Notifications> {
@@ -96,11 +100,12 @@ fun AppNavHost(
 
         composable<Route.UserPosts> { backStackEntry ->
             val userPosts: Route.UserPosts = backStackEntry.toRoute()
-            // Placeholder for UserPostsScreen
             PostScreen(
                 isDarkMode = isDarkMode,
                 onThemeToggle = onThemeToggle,
-                onPostClick = { /* Handle nested click if needed */ }
+                onPostClick = { postId ->
+                    navController.navigate(Route.PostDetail(postId))
+                }
             )
         }
     }
